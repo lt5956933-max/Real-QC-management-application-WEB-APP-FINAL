@@ -1,0 +1,16 @@
+{
+  "name": "relax-qc-control-center-cloud",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Internet-ready Relax Techno Fab QC Control Center",
+  "main": "server.js",
+  "scripts": {"start":"node server.js"},
+  "engines": {"node": ">=20"},
+  "dependencies": {
+    "connect-pg-simple": "10.0.0",
+    "express": "4.21.2",
+    "express-session": "1.18.1",
+    "multer": "2.0.2",
+    "pg": "8.16.3"
+  }
+}

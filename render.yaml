@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: relax-qc-control-center
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    numInstances: 1
+    disk:
+      name: qc-evidence
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: STORAGE_ROOT
+        value: /var/data
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: relax-qc-db
+          property: connectionString
+
+databases:
+  - name: relax-qc-db
+    plan: basic-256mb
+    databaseName: relax_qc
+    user: relax_qc

@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: relax_qc
+      POSTGRES_USER: relax_qc
+      POSTGRES_PASSWORD: relax_qc_local_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://relax_qc:relax_qc_local_password@db:5432/relax_qc
+      SESSION_SECRET: local-development-secret-change-me
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin123-change-me
+      STORAGE_ROOT: /var/data
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - appdata:/var/data
+volumes:
+  pgdata:
+  appdata:
