@@ -1,0 +1,13 @@
+PERMANENT STAGE UNLOCK FIX
+
+Root cause fixed:
+Stage 03 has QC outcome "CONFIRMED / NOT CONFIRMED". The previous lock engine used a hard-coded positive-status list that did not include CONFIRMED. Therefore Stage 03 could appear completed but the backend still considered it incomplete, keeping Stage 04 locked.
+
+Permanent rule now used:
+For every stage, the FIRST value in that stage's outcome definition is the successful QC result. The server calculates completion from the stage's own outcome definition, so new stage-specific successful values cannot be accidentally omitted from a global hard-coded list.
+
+Frontend now uses the server's authoritative stageLock.nextStage value for locking.
+
+Verification:
+- node --check server.js: PASSED
+- node --check public/index.html is not applicable (HTML with inline JS); the inline JavaScript was patched directly.
